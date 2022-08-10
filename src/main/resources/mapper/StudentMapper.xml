@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.SpringBootREST.mapper.StudentMapper">
+    <select id="getStudents" resultType="com.example.SpringBootREST.vo.StudentVo">
+        select * from student
+    </select>
+
+    <insert id="createStudent" parameterType="com.example.SpringBootREST.dto.StudentDto">
+        insert into student (first_name, last_name) values (#{firstName,jdbcType=VARCHAR}, #{lastName,jdbcType=VARCHAR})
+    </insert>
+
+    <select id="getStudentById" resultType="com.example.SpringBootREST.vo.StudentVo">
+        select * from student s where s.id = #{id}
+    </select>
+
+    <delete id="deleteStudent">
+        delete from student s where s.id = #{id}
+    </delete>
+    <update id="updateStudent">
+        update student s set s.first_name = #{param2.firstName,jdbcType=VARCHAR}, s.last_name = #{param2.lastName,jdbcType=VARCHAR} where s.id = #{param1}
+    </update>
+    <select id="searchStudents" resultType="com.example.SpringBootREST.vo.StudentVo">
+        select
+        student.id,
+        student.first_name as firstName,
+        student.last_name as lastName
+        from student
+        where 1 = 1
+        <if test="studentDto.firstName != null and studentDto.firstName != '' ">
+            and student.first_name like concat('%', #{studentDto.firstName,jdbcType=VARCHAR}, '%')
+        </if>
+    </select>
+</mapper>
