@@ -11,7 +11,7 @@ public interface StudentService  {
 
     List<StudentVo> getStudents();
 
-    String createStudent(StudentDto studentDto);
+    void createStudent(StudentDto studentDto);
 
     List<StudentVo> getStudentById(long id);
 

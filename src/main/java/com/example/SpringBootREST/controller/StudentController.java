@@ -2,6 +2,9 @@ package com.example.SpringBootREST.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.SpringBootREST.common.Result;
+import com.example.SpringBootREST.common.ResultCode;
+import com.example.SpringBootREST.common.ResultGenerator;
 import com.example.SpringBootREST.dto.StudentDto;
 import com.example.SpringBootREST.exception.ServiceException;
 import com.example.SpringBootREST.service.StudentService;
@@ -9,6 +12,7 @@ import com.example.SpringBootREST.vo.StudentVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -29,14 +33,13 @@ public class StudentController {
     Logger logger = LoggerFactory.getLogger(StudentController.class);
 
     @PostMapping("/createStudent")
-    public String createStudent(@Valid @RequestBody StudentDto studentDto){
+    public Result<String> createStudent(@RequestBody StudentDto studentDto){
         logger.info("createStudent" + " " + studentDto);
         //Check if required fields are satisfied.
         if(!StringUtils.isNotEmpty(studentDto.getFirstName())){
-            throw new ServiceException("First name is a required field.", 404);
+            throw new ServiceException("First name is a required field.", HttpStatus.BAD_REQUEST);
         }
-
-        return studentService.createStudent(studentDto);
+        return ResultGenerator.genCreatedResult();
     }
 
 

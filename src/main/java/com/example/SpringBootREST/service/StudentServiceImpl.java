@@ -28,10 +28,9 @@ public class StudentServiceImpl implements StudentService{
     }
 
     @Override
-    public String createStudent(StudentDto studentDto) {
-
+    public void createStudent(StudentDto studentDto) {
         studentMapper.createStudent(studentDto);
-        return "Student is successfully created.";
+
     }
 
     @Override
