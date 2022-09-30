@@ -14,4 +14,6 @@ public interface IDriverService {
     DriverResponse findDriverById(String driverId);
 
     void deleteDriverById(String driverId);
+
+    void updateDriverById(String driverId, DriverRequest request);
 }

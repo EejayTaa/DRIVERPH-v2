@@ -5,8 +5,8 @@
     <insert id="register" parameterType="com.ph.DriverPH.module.auth.request.AuthUserRequest">
         insert
         into
-        user (username, password, email, date)
-        values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP})
+        user (username, password, email, date, roles)
+        values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP},  #{roles,jdbcType=VARCHAR})
     </insert>
 
     <select id="getUser" resultType="com.ph.DriverPH.module.auth.entity.AuthUser">

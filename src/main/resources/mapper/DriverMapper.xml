@@ -17,4 +17,10 @@
     <select id="deleteDriverById" >
         delete from driver where driver_id = #{driverId,jdbcType=VARCHAR}
     </select>
+    <select id="updateDriverById">
+        update driver
+        set
+        first_name = #{request.firstName,jdbcType=VARCHAR}, middle_name = #{request.middleName,jdbcType=VARCHAR}, last_name = #{request.lastName,jdbcType=VARCHAR}, company = #{request.company,jdbcType=VARCHAR}, date = #{request.date,jdbcType=TIMESTAMP}
+        where driver_id = #{driverId,jdbcType=VARCHAR}
+    </select>
 </mapper>

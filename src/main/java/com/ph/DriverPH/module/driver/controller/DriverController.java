@@ -71,4 +71,17 @@ public class DriverController {
 
         return ResponseHandler.responseBuilder(HttpStatus.OK);
     }
+
+    @PutMapping("/updateDriverById/{driverId}")
+    public ResponseEntity updateDriverById(@PathVariable String driverId, @RequestBody @Validated DriverRequest request){
+
+        //check if driver id is null
+        if(StringUtils.isEmpty(driverId)){
+            throw new ServiceException("Driver id is a required field.", HttpStatus.BAD_REQUEST);
+        }
+
+        iDriverService.updateDriverById(driverId, request);
+
+        return ResponseHandler.responseBuilder(HttpStatus.OK);
+    }
 }

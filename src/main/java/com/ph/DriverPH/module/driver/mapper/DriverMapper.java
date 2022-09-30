@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Mapper
 public interface DriverMapper {
+
     List<DriverResponse> getDrivers();
 
     void addDriver(DriverRequest request);
@@ -17,4 +18,6 @@ public interface DriverMapper {
     Optional<DriverResponse> findDriverById(String driverId);
 
     void deleteDriverById(String driverId);
+
+    void updateDriverById(@Param("driverId") String driverId, @Param("request") DriverRequest request);
 }

@@ -1,5 +1,6 @@
 package com.ph.DriverPH.module.auth.service.impl;
 
+import com.ph.DriverPH.exception.ServiceException;
 import com.ph.DriverPH.module.auth.entity.AuthUser;
 import com.ph.DriverPH.module.auth.mapper.AuthUserMapper;
 import com.ph.DriverPH.module.auth.request.AuthUserRequest;
@@ -25,17 +26,27 @@ public class AuthUserServiceImpl implements AuthUserService {
 
     @Override
     public void register(AuthUserRequest authUserRequest) {
-        log.info("AuthUserServiceImpl.register:", authUserRequest);
 
+        //check if user already exists in the database
+        Optional<AuthUser> user = getUser(authUserRequest.getUsername());
+        if(user.isPresent()){
+            throw new ServiceException("Username already exists.");
+        }
+
+        //set created date
+        LocalDateTime date = LocalDateTime.now();
+        authUserRequest.setDate(date);
+
+        //encrypt user password
         authUserRequest.setPassword(passwordEncoder.encode(authUserRequest.getPassword()));
-        authUserRequest.setDate(LocalDateTime.now());
+
+        log.info("AuthUserServiceImpl.register:", authUserRequest);
         authUserMapper.register(authUserRequest);
     }
 
     @Override
-    public AuthUser getUser(String username) {
+    public Optional<AuthUser> getUser(String username) {
         Optional<AuthUser> user = authUserMapper.getUser(username);
-        user.orElseThrow(() -> new EntityNotFoundException());
-        return user.get();
+        return user;
     }
 }

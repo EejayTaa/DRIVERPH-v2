@@ -8,6 +8,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -22,5 +23,9 @@ public class AuthUser {
     private String password;
 
     private String email;
+
+    private String roles;
+
+    private LocalDateTime date;
 
 }
