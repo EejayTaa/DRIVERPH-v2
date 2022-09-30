@@ -1,10 +1,11 @@
 package com.ph.DriverPH.module.auth.controller;
 
-import com.ph.DriverPH.common.Result;
-import com.ph.DriverPH.common.ResultGenerator;
+import com.ph.DriverPH.common.ResponseHandler;
 import com.ph.DriverPH.module.auth.request.AuthUserRequest;
 import com.ph.DriverPH.module.auth.service.AuthUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,10 @@ public class AuthUserController {
     AuthUserService authUserService;
 
     @PostMapping("/register")
-    public Result register(@RequestBody @Validated AuthUserRequest authUserRequest){
+    public ResponseEntity register(@RequestBody @Validated AuthUserRequest authUserRequest){
         authUserService.register(authUserRequest);
-        return ResultGenerator.genCreatedResult();
+        return ResponseHandler.responseBuilder(HttpStatus.CREATED);
     }
-
-
 
 
 //
