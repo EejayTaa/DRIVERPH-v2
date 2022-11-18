@@ -43,19 +43,11 @@ public class DriverController {
 
     @GetMapping("/getDriverById/{driverId}")
     public ResponseEntity findDriverById(@PathVariable String driverId){
-
-        //check if driver id is null
+        //Check if driver id is null
         if(StringUtils.isEmpty(driverId)){
             throw new ServiceException("Driver id is a required field.", HttpStatus.BAD_REQUEST);
         }
-
         DriverResponse driver = iDriverService.findDriverById(driverId);
-
-        //if driver is not in the database, throw service exception.
-        if(Objects.isNull(driver)){
-            throw new ServiceException("Driver is not found.", HttpStatus.NOT_FOUND);
-        }
-
         return ResponseHandler.responseBuilder("Success", HttpStatus.OK, driver);
     }
 

@@ -1,26 +1,36 @@
 package com.ph.DriverPH.module.driver.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.alibaba.fastjson.JSONObject;
+import com.ph.DriverPH.config.DriverRedisConstant;
 import com.ph.DriverPH.exception.ServiceException;
 import com.ph.DriverPH.module.driver.mapper.DriverMapper;
 import com.ph.DriverPH.module.driver.request.DriverRequest;
 import com.ph.DriverPH.module.driver.response.DriverResponse;
 import com.ph.DriverPH.module.driver.service.IDriverService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * @author Administrator
+ */
 @Slf4j
 @Service
-public class IDriverServiceImpl implements IDriverService {
+@RequiredArgsConstructor
+public class DriverServiceImpl implements IDriverService {
 
-    @Autowired
-    DriverMapper driverMapper;
+    private final DriverMapper driverMapper;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Override
     public List<DriverResponse> getDrivers() {
@@ -35,18 +45,23 @@ public class IDriverServiceImpl implements IDriverService {
         request.setDate(date);
 
         //set unique driver id
-        request.setDriverId(this.generateDriverId());
-
-        log.info("IDriverServiceImpl.addDriver", request);
+        String driverId = generateDriverId();
+        request.setDriverId(driverId);
 
         driverMapper.addDriver(request);
-
+        log.info("---IDriverServiceImpl---addDriver:{}", JSONObject.toJSONString(request));
     }
 
     @Override
     public DriverResponse findDriverById(String driverId) {
-        Optional<DriverResponse> driver = driverMapper.findDriverById(driverId);
-        return driver.orElse(null);
+        DriverResponse driver = (DriverResponse) redisTemplate.opsForValue().get(DriverRedisConstant.DRIVER_REDIS_GET_KEY.concat(driverId));
+        if (ObjectUtil.isNull(driver)) {
+            Optional<DriverResponse> findDriver = driverMapper.findDriverById(driverId);
+            findDriver.orElseThrow(() -> new ServiceException("Driver doesn't exists."));
+            redisTemplate.opsForValue().set(DriverRedisConstant.DRIVER_REDIS_GET_KEY.concat(driverId), findDriver.get());
+            return findDriver.get();
+        }
+        return driver;
     }
 
     @Override
@@ -54,7 +69,7 @@ public class IDriverServiceImpl implements IDriverService {
 
         //check if driver exists in the database
         DriverResponse driver = findDriverById(driverId);
-        if(Objects.isNull(driver)){
+        if (Objects.isNull(driver)) {
             throw new ServiceException("Driver not found.", HttpStatus.NOT_FOUND);
         }
 
@@ -66,7 +81,7 @@ public class IDriverServiceImpl implements IDriverService {
 
         //check if driver exists in the database
         DriverResponse driver = findDriverById(driverId);
-        if(Objects.isNull(driver)){
+        if (Objects.isNull(driver)) {
             throw new ServiceException("Driver not found.", HttpStatus.NOT_FOUND);
         }
 
@@ -78,7 +93,7 @@ public class IDriverServiceImpl implements IDriverService {
         driverMapper.updateDriverById(driverId, request);
     }
 
-    public String generateDriverId(){
+    public String generateDriverId() {
         return "DVR".concat(RandomUtil.randomString(8).toUpperCase());
     }
 

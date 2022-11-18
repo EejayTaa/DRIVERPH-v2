@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.util.Date;
 
 
+/**
+ * @author Eejay Taa
+ */
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final CustomAuthenticationManager authenticationManager;
