@@ -1,20 +1,18 @@
 package com.ph.DriverPH.module.driver.mapper;
 
-import com.ph.DriverPH.module.driver.request.DriverRequest;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ph.DriverPH.module.driver.entity.Driver;
 import com.ph.DriverPH.module.driver.response.DriverResponse;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-import java.util.Optional;
 
+/**
+ * @author Eejay Ta-a
+ */
 @Mapper
-public interface DriverMapper {
-    List<DriverResponse> getDrivers();
+public interface DriverMapper extends BaseMapper<Driver> {
 
-    void addDriver(DriverRequest request);
 
-    Optional<DriverResponse> findDriverById(String driverId);
-
-    void deleteDriverById(String driverId);
+    Page<DriverResponse> getDrivers(Page<Driver> of);
 }

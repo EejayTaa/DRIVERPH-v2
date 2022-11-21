@@ -3,6 +3,7 @@ package com.ph.DriverPH.security;
 public class SecurityConstants {
 
     public static final String REGISTER_PATH = "/auth/register";
+    public static final String DRIVER_PATH = "/driver/*";
 
     public static final int TOKEN_EXPIRATION = 7200000;
 

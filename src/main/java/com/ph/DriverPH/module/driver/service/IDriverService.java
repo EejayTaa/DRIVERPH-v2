@@ -1,17 +1,28 @@
 package com.ph.DriverPH.module.driver.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.ph.DriverPH.module.driver.entity.Driver;
 import com.ph.DriverPH.module.driver.request.DriverRequest;
 import com.ph.DriverPH.module.driver.response.DriverResponse;
 
-import java.util.List;
-import java.util.Optional;
 
-public interface IDriverService {
-    List<DriverResponse> getDrivers();
+/**
+ * @author Eejay Taa
+ */
+public interface IDriverService extends IService<Driver> {
 
     void addDriver(DriverRequest request);
 
-    DriverResponse findDriverById(String driverId);
+    /**
+     * @param driverId
+     * @return
+     */
+    Driver findDriverById(String driverId);
 
     void deleteDriverById(String driverId);
+
+    void updateDriverById(String driverId, DriverRequest request);
+
+    Page<DriverResponse> getDrivers(Page<Driver> of);
 }

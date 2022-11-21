@@ -1,5 +1,6 @@
 package com.ph.DriverPH.module.driver.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -7,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 public class Driver {
 
-    private Long id;
 
     private String driverId;
 

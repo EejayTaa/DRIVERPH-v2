@@ -4,13 +4,18 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 
-@Data
+import java.time.LocalDateTime;
+
+
+/**
+ * @author Eejay Taa
+ */
+@Getter
+@Setter
 @TableName("user")
 public class AuthUser {
 
@@ -22,5 +27,9 @@ public class AuthUser {
     private String password;
 
     private String email;
+
+    private String roles;
+
+    private LocalDateTime date;
 
 }
