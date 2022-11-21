@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.Optional;
 
+/**
+ * @author Eejay Taa
+ */
 @Mapper
 public interface AuthUserMapper {
 

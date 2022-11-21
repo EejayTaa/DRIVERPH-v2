@@ -1,79 +1,70 @@
 package com.ph.DriverPH.module.driver.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ph.DriverPH.common.ResponseHandler;
-import com.ph.DriverPH.exception.ServiceException;
+import com.ph.DriverPH.module.driver.entity.Driver;
 import com.ph.DriverPH.module.driver.request.DriverRequest;
 import com.ph.DriverPH.module.driver.response.DriverResponse;
 import com.ph.DriverPH.module.driver.service.IDriverService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Driver Controller
  *
+ * @author Eejay Taa
  */
 @RestController
 @RequestMapping("/driver")
+@RequiredArgsConstructor
 public class DriverController {
 
-
-    @Autowired
-    IDriverService iDriverService;
+    private final IDriverService iDriverService;
 
     @GetMapping("/getDrivers")
-    public ResponseEntity getDrivers(){
-        List<DriverResponse> drivers = iDriverService.getDrivers();
-        return ResponseHandler.responseBuilder(drivers , HttpStatus.OK);
+    public ResponseEntity getDrivers(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+        Page<DriverResponse> response = iDriverService.getDrivers(Page.of(page, size));
+        return ResponseHandler.OK(response);
     }
 
     @PostMapping("/addDriver")
-    public ResponseEntity addDrivers(@RequestBody @Validated DriverRequest request){
-
+    public ResponseEntity addDrivers(@RequestBody @Validated DriverRequest request) {
         iDriverService.addDriver(request);
-
-        return ResponseHandler.responseBuilder(HttpStatus.CREATED);
+        return ResponseHandler.CREATED();
     }
 
     @GetMapping("/getDriverById/{driverId}")
-    public ResponseEntity findDriverById(@PathVariable String driverId){
+    public ResponseEntity findDriverById(@PathVariable String driverId) {
         //Check if driver id is null
-        if(StringUtils.isEmpty(driverId)){
-            throw new ServiceException("Driver id is a required field.", HttpStatus.BAD_REQUEST);
+        if (StringUtils.isEmpty(driverId)) {
+            return ResponseHandler.BAD_REQUEST(driverId, "Driver ID is a required field.");
         }
-        DriverResponse driver = iDriverService.findDriverById(driverId);
-        return ResponseHandler.responseBuilder("Success", HttpStatus.OK, driver);
+        Driver driver = iDriverService.findDriverById(driverId);
+        return ResponseHandler.OK(driver);
     }
 
     @DeleteMapping("/deleteDriverById/{driverId}")
-    public ResponseEntity deleteDriverById(@PathVariable String driverId){
+    public ResponseEntity deleteDriverById(@PathVariable String driverId) {
 
         //check if driver id is null
-        if(StringUtils.isEmpty(driverId)){
-            throw new ServiceException("Driver id is a required field.", HttpStatus.BAD_REQUEST);
+        if (StringUtils.isEmpty(driverId)) {
+            return ResponseHandler.BAD_REQUEST(driverId, "Driver ID is a required field.");
         }
-
         iDriverService.deleteDriverById(driverId);
-
-        return ResponseHandler.responseBuilder(HttpStatus.OK);
+        return ResponseHandler.OK();
     }
 
     @PutMapping("/updateDriverById/{driverId}")
-    public ResponseEntity updateDriverById(@PathVariable String driverId, @RequestBody @Validated DriverRequest request){
-
+    public ResponseEntity updateDriverById(@PathVariable String driverId, @RequestBody @Validated DriverRequest request) {
         //check if driver id is null
-        if(StringUtils.isEmpty(driverId)){
-            throw new ServiceException("Driver id is a required field.", HttpStatus.BAD_REQUEST);
+        if (StringUtils.isEmpty(driverId)) {
+            return ResponseHandler.BAD_REQUEST(driverId, "Driver ID is a required field.");
         }
-
         iDriverService.updateDriverById(driverId, request);
-
-        return ResponseHandler.responseBuilder(HttpStatus.OK);
+        return ResponseHandler.OK();
     }
 }
