@@ -4,10 +4,14 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.ph.DriverPH.common.entity.BaseEntity;
+import lombok.*;
 
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 
@@ -15,21 +19,15 @@ import java.time.LocalDateTime;
  * @author Eejay Taa
  */
 @Getter
-@Setter
-@TableName("user")
-public class AuthUser {
-
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+@Builder
+@Entity(name="user")
+@AllArgsConstructor(staticName = "of")
+@NoArgsConstructor
+public class AuthUser extends BaseEntity {
 
     private String username;
-
     private String password;
-
-    private String email;
-
     private String roles;
-
-    private LocalDateTime date;
+//    private BaseInformation baseInformation;
 
 }

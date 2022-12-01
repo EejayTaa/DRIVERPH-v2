@@ -10,7 +10,7 @@ import com.ph.DriverPH.module.driver.response.DriverResponse;
 /**
  * @author Eejay Taa
  */
-public interface IDriverService extends IService<Driver> {
+public interface IDriverService {
 
     void addDriver(DriverRequest request);
 
