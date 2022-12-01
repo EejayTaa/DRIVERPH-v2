@@ -25,6 +25,8 @@ public class AuthUserRequest {
     @NotBlank(message = "Email is a required.")
     private String email;
 
+    private String role;
+
     @JsonIgnore
     private LocalDateTime date;
 

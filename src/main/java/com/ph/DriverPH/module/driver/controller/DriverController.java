@@ -8,9 +8,12 @@ import com.ph.DriverPH.module.driver.request.DriverRequest;
 import com.ph.DriverPH.module.driver.response.DriverResponse;
 import com.ph.DriverPH.module.driver.service.IDriverService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -19,52 +22,39 @@ import org.springframework.web.bind.annotation.*;
  * @author Eejay Taa
  */
 @RestController
-@RequestMapping("/driver")
+@RequestMapping("/drivers")
 @RequiredArgsConstructor
 public class DriverController {
 
     private final IDriverService iDriverService;
 
-    @GetMapping("/getDrivers")
-    public ResponseEntity getDrivers(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "10") Integer size) {
-        Page<DriverResponse> response = iDriverService.getDrivers(Page.of(page, size));
-        return ResponseHandler.OK(response);
+    @GetMapping("/")
+    public ResponseEntity getDrivers( @RequestParam(defaultValue = "1") Integer size, @RequestParam(defaultValue = "0") Integer page) {
+        List<Driver> list = iDriverService.getDrivers(PageRequest.of(page, size));
+        return ResponseHandler.OK(list);
     }
 
-    @PostMapping("/addDriver")
+    @GetMapping("/{id}")
+    public ResponseEntity getDriverById(@PathVariable String id) {
+        Driver driver = iDriverService.findDriverById(id);
+        return ResponseHandler.OK(driver);
+    }
+
+    @PostMapping("/")
     public ResponseEntity addDrivers(@RequestBody @Validated DriverRequest request) {
         iDriverService.addDriver(request);
         return ResponseHandler.CREATED();
     }
 
-    @GetMapping("/getDriverById/{driverId}")
-    public ResponseEntity findDriverById(@PathVariable String driverId) {
-        //Check if driver id is null
-        if (StringUtils.isEmpty(driverId)) {
-            return ResponseHandler.BAD_REQUEST(driverId, "Driver ID is a required field.");
-        }
-        Driver driver = iDriverService.findDriverById(driverId);
-        return ResponseHandler.OK(driver);
-    }
-
-    @DeleteMapping("/deleteDriverById/{driverId}")
-    public ResponseEntity deleteDriverById(@PathVariable String driverId) {
-
-        //check if driver id is null
-        if (StringUtils.isEmpty(driverId)) {
-            return ResponseHandler.BAD_REQUEST(driverId, "Driver ID is a required field.");
-        }
-        iDriverService.deleteDriverById(driverId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteDriverById(@PathVariable String id) {
+        iDriverService.deleteDriverById(id);
         return ResponseHandler.OK();
     }
 
-    @PutMapping("/updateDriverById/{driverId}")
-    public ResponseEntity updateDriverById(@PathVariable String driverId, @RequestBody @Validated DriverRequest request) {
-        //check if driver id is null
-        if (StringUtils.isEmpty(driverId)) {
-            return ResponseHandler.BAD_REQUEST(driverId, "Driver ID is a required field.");
-        }
-        iDriverService.updateDriverById(driverId, request);
+    @PutMapping("/{id}")
+    public ResponseEntity updateDriverById(@PathVariable String id, @RequestBody @Validated DriverRequest request) {
+        iDriverService.updateDriverById(id, request);
         return ResponseHandler.OK();
     }
 }
