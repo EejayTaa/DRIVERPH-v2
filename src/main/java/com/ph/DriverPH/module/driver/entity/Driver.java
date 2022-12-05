@@ -1,24 +1,18 @@
 package com.ph.DriverPH.module.driver.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.ph.DriverPH.common.entity.BaseEntity;
+import com.ph.DriverPH.module.auth.entity.BaseInformation;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
 
 @Data
-public class Driver {
-
+@Entity(name="driver")
+public class Driver extends BaseEntity {
 
     private String driverId;
-
-    private String firstName;
-
-    private String middleName;
-
-    private String lastName;
-
+    private BaseInformation baseInformation;
     private String company;
-
-    private LocalDateTime date;
 
 }

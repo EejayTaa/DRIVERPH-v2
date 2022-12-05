@@ -12,8 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
+
 
 @Component
 public class CustomAuthenticationManager implements AuthenticationManager {
@@ -32,15 +31,14 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         //extract the authentication credentials, compare them into the credentials inside our database.
 
         //use the user service to find user inside the database
-        Optional<AuthUser> user = authUserService.getUser(authentication.getName());
-        user.orElseThrow(() -> new EntityNotFoundException());
+        AuthUser user = authUserService.getUser(authentication.getName());
 
         //crendentials validation and decryption of password using bcrypt
-        if(!bCryptPasswordEncoder.passwordEncoder().matches(authentication.getCredentials().toString(),user.get().getPassword())){
+        if(!bCryptPasswordEncoder.passwordEncoder().matches(authentication.getCredentials().toString(),user.getPassword())){
             throw new BadCredentialsException("Username or password is incorrect.");
         }
 
         //return token if valid credentials.
-        return new UsernamePasswordAuthenticationToken(authentication.getName(), user.get().getUsername());
+        return new UsernamePasswordAuthenticationToken(authentication.getName(), user.getUsername());
     }
 }

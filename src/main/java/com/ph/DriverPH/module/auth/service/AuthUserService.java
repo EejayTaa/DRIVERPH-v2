@@ -3,16 +3,21 @@ package com.ph.DriverPH.module.auth.service;
 
 import com.ph.DriverPH.module.auth.entity.AuthUser;
 import com.ph.DriverPH.module.auth.request.AuthUserRequest;
+import org.springframework.data.domain.PageRequest;
 
-import java.util.Optional;
+import java.util.List;
+
 
 /**
  * @author Eejay Taa
  */
 public interface AuthUserService {
 
-    void register (AuthUserRequest authUserRequest);
+    void registerUser (AuthUserRequest authUserRequest);
 
-    Optional<AuthUser> getUser(String username);
+    AuthUser getUser(String username);
 
+    List<AuthUser> listUser(PageRequest of);
+
+    void deleteUser(String id);
 }
