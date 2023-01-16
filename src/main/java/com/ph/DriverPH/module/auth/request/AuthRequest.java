@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-/**
- * @author Eejay Taa
- */
+
 @Getter
 @Setter
-public class AuthUserRequest {
+@ToString
+public class AuthRequest {
 
     @NotBlank(message = "Username is a required.")
     private String username;

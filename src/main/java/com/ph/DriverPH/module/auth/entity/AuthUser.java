@@ -17,9 +17,9 @@ import javax.persistence.Entity;
 public class AuthUser extends BaseEntity {
 
     private String username;
-    private String password;
-    private String email;
-    private String role;
 
+    private String password;
+
+    private String email;
 
 }

@@ -3,15 +3,15 @@ package com.ph.DriverPH.module.driver.request;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
-/**
- * @author Administrator
- */
+
 @Getter
 @Setter
+@ToString
 public class DriverRequest {
 
     @JsonIgnore

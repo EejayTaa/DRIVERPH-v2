@@ -1,13 +1,15 @@
 package com.ph.DriverPH.module.driver.response;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Data
-public class DriverResponse {
+@Getter
+@Setter
+public class DriverDetailResponse implements Serializable {
 
-    private Long id;
 
     private String driverId;
 

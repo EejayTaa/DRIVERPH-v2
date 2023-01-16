@@ -2,13 +2,14 @@ package com.ph.DriverPH.module.driver.mapstruct;
 
 import com.ph.DriverPH.module.driver.entity.Driver;
 import com.ph.DriverPH.module.driver.request.DriverRequest;
+import com.ph.DriverPH.module.driver.response.DriverDetailResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface DriverConverter {
+public interface IDriverConverter {
 
-    DriverConverter INSTANCE = Mappers.getMapper(DriverConverter.class);
+    IDriverConverter INSTANCE = Mappers.getMapper(IDriverConverter.class);
 
     /**
      * Convert DriverRequest Class to Driver Class.
@@ -17,4 +18,6 @@ public interface DriverConverter {
      * @return
      */
     Driver convert(DriverRequest request);
+
+    DriverDetailResponse convert(Driver driver);
 }

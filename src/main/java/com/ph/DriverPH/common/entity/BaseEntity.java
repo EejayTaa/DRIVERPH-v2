@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @MappedSuperclass
-public class BaseEntity extends DomainEntity {
+public class BaseEntity extends DomainEntity{
 
     @CreationTimestamp
     private LocalDateTime createdDate;

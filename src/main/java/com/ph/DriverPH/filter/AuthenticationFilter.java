@@ -21,18 +21,12 @@ import java.io.IOException;
 import java.util.Date;
 
 
-/**
- * @author Eejay Taa
- */
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
     private final CustomAuthenticationManager authenticationManager;
-
     @Autowired
     public AuthenticationFilter(@Lazy CustomAuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try{

@@ -13,28 +13,19 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
-
 public class SecurityConfiguration {
 
-
     private final CustomAuthenticationManager customAuthenticationManager;
-
     @Autowired
     public SecurityConfiguration(@Lazy CustomAuthenticationManager customAuthenticationManager) {
         this.customAuthenticationManager = customAuthenticationManager;
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
@@ -53,24 +44,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
-
-    @Bean
-    public InMemoryUserDetailsManager users(){
-        List<UserDetails> userDetailsList = new ArrayList<>();
-
-        userDetailsList.add(User.withUsername("admin")
-                .password(passwordEncoder()
-                        .encode("password"))
-                .roles("ADMIN").build());
-
-        userDetailsList.add(User.withUsername("user")
-                .password(passwordEncoder()
-                        .encode("password"))
-                .roles("USER").build());
-
-        return new InMemoryUserDetailsManager(userDetailsList);
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder()
     {
