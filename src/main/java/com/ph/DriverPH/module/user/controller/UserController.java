@@ -2,6 +2,7 @@ package com.ph.DriverPH.module.user.controller;
 
 
 import com.ph.DriverPH.common.ResponseHandler;
+import com.ph.DriverPH.module.user.request.UserSearchRequest;
 import com.ph.DriverPH.module.user.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity findAllUsers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size){
-        return ResponseHandler.OK(userService.findAllUsers(page, size));
+    public ResponseEntity findAllUsers(UserSearchRequest request){
+        return ResponseHandler.OK(userService.findAllUsers(request));
     }
 }
